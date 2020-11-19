@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1605817364626" clover="3.2.0">
-  <project timestamp="1605817364626" name="All files">
+<coverage generated="1605818708385" clover="3.2.0">
+  <project timestamp="1605818708386" name="All files">
     <metrics statements="75" coveredstatements="59" conditionals="7" coveredconditionals="5" methods="21" coveredmethods="15" elements="103" coveredelements="79" complexity="0" loc="75" ncloc="75" packages="7" files="12" classes="12"/>
     <package name="src">
       <metrics statements="21" coveredstatements="18" conditionals="0" coveredconditionals="0" methods="7" coveredmethods="6"/>
@@ -48,7 +48,7 @@
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
         <line num="6" count="1" type="stmt"/>
         <line num="8" count="3" type="stmt"/>
-        <line num="15" count="2" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
       </file>
     </package>
     <package name="src.helpers.errors">
@@ -78,8 +78,8 @@
         <metrics statements="10" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
-        <line num="6" count="2" type="stmt"/>
-        <line num="7" count="2" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="7" count="1" type="stmt"/>
         <line num="11" count="0" type="stmt"/>
         <line num="12" count="0" type="stmt"/>
         <line num="16" count="0" type="stmt"/>
@@ -116,12 +116,12 @@
         <line num="3" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
         <line num="6" count="1" type="stmt"/>
-        <line num="9" count="5" type="stmt"/>
-        <line num="13" count="5" type="stmt"/>
-        <line num="14" count="5" type="cond" truecount="5" falsecount="0"/>
+        <line num="9" count="4" type="stmt"/>
+        <line num="13" count="4" type="stmt"/>
+        <line num="14" count="4" type="cond" truecount="5" falsecount="0"/>
         <line num="15" count="3" type="stmt"/>
-        <line num="18" count="2" type="stmt"/>
-        <line num="20" count="2" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
       </file>
       <file name="index.ts" path="C:\Users\andreeiruan\Documents\GitHub\api-ts\src\useCases\orders\createOrderUseCase\index.ts">
         <metrics statements="7" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>

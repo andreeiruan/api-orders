@@ -19,6 +19,6 @@
         "@typescript-eslint"
     ],
     "rules": {
-        "ban-ts-ignore": true
+        
     }
 }

@@ -1,5 +1,5 @@
 export interface ICreateOrderRequestDTO{
-  table: number,
-  description: string,
-  orderNumber: number
+  table?: number,
+  description?: string,
+  orderNumber?: number
 }
