@@ -7,15 +7,16 @@ export interface IOrdersAttributes{
   table: number,
   description: string,
   orderNumber: number,
-  status?: OrderStatus
+  status?: string
 }
 
 export interface IOrdersRepository{
-  create(order: IOrdersAttributes): Promise<Order>
-  list(): Promise<Order[]>
-  updateStatus(id: string, status: OrderStatus): Promise<Order>
-  update(id: string, order: IOrdersAttributes): Promise<Order>
-  drop(): Promise<void>
   connect(): Promise<void>
   disconnect(): Promise<void>
+  findById(id: string): Promise<Order>
+  create(order: IOrdersAttributes): Promise<Order>
+  list(): Promise<Order[]>
+  updateStatus(id: string, status: string): Promise<Order>
+  update(id: string, order: IOrdersAttributes): Promise<Order>
+  drop(): Promise<void>
 }

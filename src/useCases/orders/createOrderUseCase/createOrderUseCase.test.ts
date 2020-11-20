@@ -22,6 +22,9 @@ const makeSut = () => {
 
 const makeSutSpy = () => {
   class OrdersRepositorySpy implements IOrdersRepository {
+    findById (id: string): Promise<Order> { // eslint-disable-line
+      throw new Error('Method not implemented.')
+    }
     create (order: IOrdersAttributes): Promise<Order> { // eslint-disable-line
       throw new Error('Method not implemented.')
     }

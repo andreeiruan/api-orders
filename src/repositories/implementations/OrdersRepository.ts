@@ -1,5 +1,5 @@
 import { Order, orderModel } from '../../entities/Order'
-import { IOrdersRepository, IOrdersAttributes, OrderStatus } from '../IOrdersRespository'
+import { IOrdersRepository, IOrdersAttributes } from '../IOrdersRespository'
 import mongoose from 'mongoose'
 
 import { config } from 'dotenv'
@@ -18,6 +18,16 @@ export class OrdersRepository implements IOrdersRepository {
     mongoose.disconnect()
   }
 
+  async findById (id: string): Promise<Order> {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new Error('Id Invalid type mongo')
+    }
+    await this.connect()
+    const order = await orderModel.findById(id)
+    await this.disconnect()
+    return order
+  }
+
   async create (order: IOrdersAttributes): Promise<Order> {
     await this.connect()
     const orderCreate = await orderModel.create(order)
@@ -32,7 +42,10 @@ export class OrdersRepository implements IOrdersRepository {
     return orders
   }
 
-  async updateStatus (id: string, status: OrderStatus): Promise<Order> {
+  async updateStatus (id: string, status: string): Promise<Order> {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new Error('Id Invalid type mongo')
+    }
     await this.connect()
     const order = await orderModel.findByIdAndUpdate({ _id: id }, { status }, { new: true })
     await this.disconnect()
@@ -40,6 +53,9 @@ export class OrdersRepository implements IOrdersRepository {
   }
 
   async update (id: string, order: IOrdersAttributes): Promise<Order> {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new Error('Id Invalid type mongo')
+    }
     await this.connect()
     const orderUpdate = await orderModel.findByIdAndUpdate({ _id: id }, {
       order
