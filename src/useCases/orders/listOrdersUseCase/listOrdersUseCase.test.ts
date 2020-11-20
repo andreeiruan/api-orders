@@ -5,7 +5,6 @@ import { OrdersRepository } from './../../../repositories/implementations/Orders
 import { ListOrdersUseCase } from './listOrdersUseCase'
 import { app } from '../../../app'
 import request from 'supertest'
-import { Router } from 'express'
 import { config } from 'dotenv'
 import { Order } from 'src/entities/Order'
 

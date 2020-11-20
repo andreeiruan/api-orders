@@ -1,6 +1,10 @@
+import { CreateOrderController } from './createOrderControllerExpress'
 import { CreateOrderUseCase } from '../createOrderUseCase/createOrderUseCase'
 import { OrdersRepository } from '../../../repositories/implementations/OrdersRepository'
+import { IOrdersAttributes, IOrdersRepository, OrderStatus } from '../../../repositories/IOrdersRespository'
+import { Order } from '../../../entities/Order'
 import { MissingParamError } from '../../../helpers/errors/missingParamError'
+import { ServerError } from '../../../helpers/errors/serverError'
 import request from 'supertest'
 import faker from 'faker'
 import { app } from '../../../app'
@@ -16,6 +20,44 @@ const makeSut = () => {
   return { sut, ordersRepository }
 }
 
+const makeSutSpy = () => {
+  class OrdersRepositorySpy implements IOrdersRepository {
+    create (order: IOrdersAttributes): Promise<Order> { // eslint-disable-line
+      throw new Error('Method not implemented.')
+    }
+
+    list (): Promise<Order[]> {
+      throw new Error('Method not implemented.')
+    }
+
+    updateStatus (id: string, status: OrderStatus): Promise<Order> { // eslint-disable-line
+      throw new Error('Method not implemented.')
+    }
+
+    update (id: string, order: IOrdersAttributes): Promise<Order> { // eslint-disable-line
+      throw new Error('Method not implemented.')
+    }
+
+    drop (): Promise<void> {
+      throw new Error('Method not implemented.')
+    }
+
+    connect (): Promise<void> {
+      throw new Error('Method not implemented.')
+    }
+
+    disconnect (): Promise<void> {
+      throw new Error('Method not implemented.')
+    }
+  }
+
+  const ordersRepository = new OrdersRepositorySpy()
+  const sut = new CreateOrderUseCase(ordersRepository)
+
+  const controllerSut = new CreateOrderController(sut)
+
+  return { sut, controllerSut }
+}
 describe('Create Order', () => {
   afterAll(async () => {
     const { ordersRepository } = makeSut()
@@ -76,5 +118,35 @@ describe('Create Order', () => {
 
     expect(response.status).toBe(201)
     expect(response.body.description).toBe(body.description)
+  })
+
+  it('Should returns 500 if you have any internal errors in CreateOrderUseCase', async () => {
+    const { sut } = makeSutSpy()
+    const bodyFake = {
+      table: faker.random.number(),
+      description: faker.random.words(),
+      orderNumber: faker.random.number()
+    }
+    const { statusCode, body } = await sut.execute(bodyFake)
+
+    expect(statusCode).toBe(500)
+    expect(body).toEqual({ error: new ServerError().message })
+  })
+
+  it('Should returns 500 if you have any internal errors in CreateOrderController', async () => {
+    const { controllerSut } = makeSutSpy()
+    const bodyFake = {
+      table: faker.random.number(),
+      description: faker.random.words(),
+      orderNumber: faker.random.number()
+    }
+
+    app.post('/ordersSpy', (req, res) => controllerSut.handle(req, res))
+
+    const response = await request(app)
+      .post('/ordersSpy')
+      .send(bodyFake)
+
+    expect(response.status).toBe(500)
   })
 })
