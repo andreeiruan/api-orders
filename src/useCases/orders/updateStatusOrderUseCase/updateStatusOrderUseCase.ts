@@ -1,14 +1,14 @@
+import { IOrdersRepository } from './../../../repositories/IOrdersRespository'
 import { InvalidParamError } from './../../../helpers/errors/InvalidParamError'
 import { NotFoundError } from './../../../helpers/errors/notFoundError'
 import { MissingParamError } from './../../../helpers/errors/missingParamError'
 import { HttpResponse, IHttpResponse } from './../../../helpers/HttpResponse'
 import { IUpdateStatusOrderRequestDTO } from './IUpdateStatusOrderRequestDTO'
-import { OrdersRepository } from './../../../repositories/implementations/OrdersRepository'
 import { ServerError } from '../../../helpers/errors/serverError'
 
 export class UpdateStatusOrderUseCase {
-  private ordersRepository: OrdersRepository
-  constructor (ordersRepository: OrdersRepository) {
+  private ordersRepository: IOrdersRepository
+  constructor (ordersRepository: IOrdersRepository) {
     this.ordersRepository = ordersRepository
   }
 
