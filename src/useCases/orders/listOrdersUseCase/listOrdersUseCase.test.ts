@@ -31,4 +31,11 @@ describe('List Orders UseCase', () => {
 
     expect(response.status).toBe(200)
   })
+  it('teste', () => {
+    const a = 3
+    const b = 2
+    const r = a + b
+
+    expect(r).toBe(5)
+  })
 })
