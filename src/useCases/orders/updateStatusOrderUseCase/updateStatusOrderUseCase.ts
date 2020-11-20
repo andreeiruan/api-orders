@@ -23,6 +23,9 @@ export class UpdateStatusOrderUseCase {
         return HttpResponse.invalidArgument(new InvalidParamError('OrderStatus'))
       }
 
+      if (!this.ordersRepository.validatedTypeId(id)) {
+        return HttpResponse.invalidArgument(new InvalidParamError('id'))
+      }
       const orderExists = await this.ordersRepository.findById(id)
       if (!orderExists) {
         return HttpResponse.notFound(new NotFoundError('order by id'))

@@ -18,10 +18,11 @@ export class OrdersRepository implements IOrdersRepository {
     mongoose.disconnect()
   }
 
+  validatedTypeId (id: string): boolean {
+    return mongoose.Types.ObjectId.isValid(id)
+  }
+
   async findById (id: string): Promise<Order> {
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      throw new Error('Id Invalid type mongo')
-    }
     await this.connect()
     const order = await orderModel.findById(id)
     await this.disconnect()
@@ -43,9 +44,6 @@ export class OrdersRepository implements IOrdersRepository {
   }
 
   async updateStatus (id: string, status: string): Promise<Order> {
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      throw new Error('Id Invalid type mongo')
-    }
     await this.connect()
     const order = await orderModel.findByIdAndUpdate({ _id: id }, { status }, { new: true })
     await this.disconnect()
@@ -53,9 +51,6 @@ export class OrdersRepository implements IOrdersRepository {
   }
 
   async update (id: string, order: IOrdersAttributes): Promise<Order> {
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      throw new Error('Id Invalid type mongo')
-    }
     await this.connect()
     const orderUpdate = await orderModel.findByIdAndUpdate({ _id: id }, {
       order

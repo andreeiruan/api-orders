@@ -40,6 +40,9 @@ const createOrderFake = async () => {
 
 const makeSutSpy = () => {
   class OrdersRepositorySpy implements IOrdersRepository {
+    validatedTypeId (id: string): boolean { // eslint-disable-line
+      throw new Error('Method not implemented.')
+    }
     findById (id: string): Promise<Order> { // eslint-disable-line
       throw new Error('Method not implemented.')
     }
@@ -104,13 +107,13 @@ describe('Update Status', () => {
     expect(body).toEqual({ error: new NotFoundError('order by id').message })
   })
 
-  it('Should return 500 if id is in invalid format', async () => {
+  it('Should return 422 if id is in invalid format', async () => {
     const { sut } = makeSut()
 
     const { statusCode, body } = await sut.execute({ id: 'any_id', orderStatus: 'DONE' })
 
-    expect(statusCode).toBe(500)
-    expect(body).toEqual({ error: new ServerError().message })
+    expect(statusCode).toBe(422)
+    expect(body).toEqual({ error: new InvalidParamError('id').message })
   })
 
   it('Should return 422 if orderStatus invalid value', async () => {
@@ -144,6 +147,7 @@ describe('Update Status', () => {
       .send({ orderStatus: 'DONE' })
 
     expect(response.status).toBe(500)
+    expect(response.body).toEqual({ error: new ServerError().message })
   })
 
   it('Should returns 202 if updated the order at the database', async () => {

@@ -17,6 +17,7 @@ export interface IOrdersRepository{
   create(order: IOrdersAttributes): Promise<Order>
   list(): Promise<Order[]>
   updateStatus(id: string, status: string): Promise<Order>
+  validatedTypeId(id: string): boolean
   update(id: string, order: IOrdersAttributes): Promise<Order>
   drop(): Promise<void>
 }
