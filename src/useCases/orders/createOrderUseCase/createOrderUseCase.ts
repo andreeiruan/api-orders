@@ -1,3 +1,4 @@
+import { ServerError } from './../../../helpers/errors/serverError'
 import { IOrdersRepository } from './../../../repositories/IOrdersRespository'
 import { ICreateOrderRequestDTO } from './CreateOrderDTO'
 import { HttpResponse, IHttpResponse } from '../../../helpers/HttpResponse'
@@ -10,13 +11,17 @@ export class CreateOrderUseCase {
   }
 
   async execute (data: ICreateOrderRequestDTO): Promise<IHttpResponse> {
-    const { table, description, orderNumber } = data
-    if (!table || !description || !orderNumber) {
-      return HttpResponse.badRequest(new MissingParamError('Table or description or orderNumber'))
+    try {
+      const { table, description, orderNumber } = data
+      if (!table || !description || !orderNumber) {
+        return HttpResponse.badRequest(new MissingParamError('Table or description or orderNumber'))
+      }
+
+      const order = await this.ordersRepository.create({ table, description, orderNumber })
+
+      return HttpResponse.created(order)
+    } catch (error) {
+      return HttpResponse.serverError(new ServerError())
     }
-
-    const order = await this.ordersRepository.create({ table, description, orderNumber })
-
-    return HttpResponse.created(order)
   }
 }

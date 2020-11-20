@@ -6,13 +6,13 @@ module.exports = {
   // automock: false,
 
   // Stop running tests after `n` failures
-  // bail: 0,
+  // bail: true,
 
   // The directory where Jest should store its cached dependency information
   // cacheDirectory: "/private/var/folders/m7/3yjbp5ds77xb33vt96mwlwq00000gn/T/jest_dx",
 
   // Automatically clear mock calls and instances between every test
-  clearMocks: true,
+  // clearMocks: true,
 
   // Indicates whether the coverage information should be collected while executing the test
   collectCoverage: true,
@@ -138,7 +138,7 @@ module.exports = {
   // testLocationInResults: false,
 
   // The glob patterns Jest uses to detect test files
-  testMatch: ["**/src/**/*.test.ts?(x)"]
+  testMatch: ["**/src/**/*.test.ts?(x)"],
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
   // testPathIgnorePatterns: [
   //   "/node_modules/"

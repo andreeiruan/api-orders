@@ -15,4 +15,7 @@ export interface IOrdersRepository{
   list(): Promise<Order[]>
   updateStatus(id: string, status: OrderStatus): Promise<Order>
   update(id: string, order: IOrdersAttributes): Promise<Order>
+  drop(): Promise<void>
+  connect(): Promise<void>
+  disconnect(): Promise<void>
 }

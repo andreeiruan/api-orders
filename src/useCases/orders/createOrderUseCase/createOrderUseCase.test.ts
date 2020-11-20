@@ -1,19 +1,26 @@
 import { CreateOrderUseCase } from '../createOrderUseCase/createOrderUseCase'
 import { OrdersRepository } from '../../../repositories/implementations/OrdersRepository'
 import { MissingParamError } from '../../../helpers/errors/missingParamError'
-import mongoose from 'mongoose'
 import request from 'supertest'
 import faker from 'faker'
 import { app } from '../../../app'
+
+import { config } from 'dotenv'
+
+config({ path: String(process.env.NODE_ENV).trim() === 'test' ? '.env.test' : '.env' })
 
 const makeSut = () => {
   const ordersRepository = new OrdersRepository()
   const sut = new CreateOrderUseCase(ordersRepository)
 
-  return { sut }
+  return { sut, ordersRepository }
 }
 
 describe('Create Order', () => {
+  afterAll(async () => {
+    const { ordersRepository } = makeSut()
+    await ordersRepository.drop()
+  })
   it('Should return  400 if no orderNumber provided', async () => {
     const { sut } = makeSut()
     const { statusCode, body } = await sut.execute({
@@ -45,14 +52,6 @@ describe('Create Order', () => {
   })
 
   it('Should return 201 if the required data has been validated', async () => {
-    mongoose.connect('mongodb://localhost:27017/testorders', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useFindAndModify: false
-    })
-      .then(() => console.log('Connected to cluster mongo atlas'))
-      .catch(err => console.log(`Error connecting to the cluster: ${err}`))
-
     const { sut } = makeSut()
 
     const { statusCode } = await sut.execute({
@@ -60,6 +59,7 @@ describe('Create Order', () => {
       description: faker.random.words(),
       orderNumber: faker.random.number()
     })
+
     expect(statusCode).toBe(201)
   })
 
