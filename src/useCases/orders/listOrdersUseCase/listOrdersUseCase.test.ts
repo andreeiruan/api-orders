@@ -19,6 +19,14 @@ const makeSut = () => {
 
 const makeSutSpy = () => {
   class OrdersRepositorySpy implements IOrdersRepository {
+    findById (id: string): Promise<Order> {
+      throw new Error('Method not implemented.')
+    }
+
+    validatedTypeId (id: string): boolean {
+      throw new Error('Method not implemented.')
+    }
+
     create (order: IOrdersAttributes): Promise<Order> {
       console.log(order)
       throw new Error('Method not implemented.')
