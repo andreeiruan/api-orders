@@ -1,3 +1,4 @@
+import { IDbServices } from 'src/database/IDbServices'
 import { Order } from '../entities/Order'
 
 export type OrderStatus = 'PENDING' | 'PREPARING' | 'DONE' | 'CANCELED'
@@ -11,8 +12,7 @@ export interface IOrdersAttributes{
 }
 
 export interface IOrdersRepository{
-  connect(): Promise<void>
-  disconnect(): Promise<void>
+  _dbServices: IDbServices
   findById(id: string): Promise<Order>
   create(order: IOrdersAttributes): Promise<Order>
   list(): Promise<Order[]>

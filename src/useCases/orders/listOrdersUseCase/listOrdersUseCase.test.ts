@@ -7,11 +7,14 @@ import { app } from '../../../app'
 import request from 'supertest'
 import { config } from 'dotenv'
 import { Order } from 'src/entities/Order'
+import { DbServices } from '../../../database/DbServices'
+import { IDbServices } from '../../../database/IDbServices'
 
 config({ path: String(process.env.NODE_ENV).trim() === 'test' ? '.env.test' : '.env' })
 
 const makeSut = () => {
-  const ordersRepository = new OrdersRepository()
+  const dbServices = new DbServices()
+  const ordersRepository = new OrdersRepository(dbServices)
   const sut = new ListOrdersUseCase(ordersRepository)
 
   return { sut, ordersRepository }
@@ -19,11 +22,17 @@ const makeSut = () => {
 
 const makeSutSpy = () => {
   class OrdersRepositorySpy implements IOrdersRepository {
-    findById (id: string): Promise<Order> {
+    readonly _dbServices : IDbServices
+
+    constructor (dbServices: IDbServices) {
+      this._dbServices = dbServices
+    }
+
+    findById (id: string): Promise<Order> { // eslint-disable-line
       throw new Error('Method not implemented.')
     }
 
-    validatedTypeId (id: string): boolean {
+    validatedTypeId (id: string): boolean { // eslint-disable-line
       throw new Error('Method not implemented.')
     }
 
@@ -57,7 +66,8 @@ const makeSutSpy = () => {
     }
   }
 
-  const ordersRepository = new OrdersRepositorySpy()
+  const dbServices = new DbServices()
+  const ordersRepository = new OrdersRepositorySpy(dbServices)
   const sut = new ListOrdersUseCase(ordersRepository)
 
   const controllerSut = new ListOrderControllerExpress(sut)

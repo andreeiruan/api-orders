@@ -11,13 +11,16 @@ import { NotFoundError } from '../../../helpers/errors/notFoundError'
 import request from 'supertest'
 import faker from 'faker'
 import { app } from '../../../app'
+import { DbServices } from '../../../database/DbServices'
+import { IDbServices } from '../../../database/IDbServices'
 
 import { config } from 'dotenv'
 
 config({ path: String(process.env.NODE_ENV).trim() === 'test' ? '.env.test' : '.env' })
 
 const makeSut = () => {
-  const ordersRepository = new OrdersRepository()
+  const dbServices = new DbServices()
+  const ordersRepository = new OrdersRepository(dbServices)
   const createOrderSut = new CreateOrderUseCase(ordersRepository)
   const sut = new UpdateStatusOrderUseCase(ordersRepository)
 
@@ -40,6 +43,11 @@ const createOrderFake = async () => {
 
 const makeSutSpy = () => {
   class OrdersRepositorySpy implements IOrdersRepository {
+    readonly _dbServices : IDbServices
+
+    constructor (dbServices: IDbServices) {
+      this._dbServices = dbServices
+    }
     validatedTypeId (id: string): boolean { // eslint-disable-line
       throw new Error('Method not implemented.')
     }
@@ -75,7 +83,8 @@ const makeSutSpy = () => {
     }
   }
 
-  const ordersRepository = new OrdersRepositorySpy()
+  const dbServices = new DbServices()
+  const ordersRepository = new OrdersRepositorySpy(dbServices)
   const sut = new UpdateStatusOrderUseCase(ordersRepository)
 
   const controllerSut = new UpdateStatusOrderControllerExpress(sut)
