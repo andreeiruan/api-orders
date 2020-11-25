@@ -16,7 +16,7 @@ class Application {
       return next()
     })
     this.server.use(express.json())
-    this.server.use(morgan('short'))
+    this.server.use(morgan('dev'))
   }
 
   routes () {

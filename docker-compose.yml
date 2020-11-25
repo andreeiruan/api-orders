@@ -1,0 +1,49 @@
+version: "3"
+
+services: 
+  api:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports: 
+      - "3000:3000"
+    container_name: api-orders
+    restart: always
+    env_file: .env
+    environment:
+      - SERVER_PORT=${SERVER_PORT}
+      - MONGO_USERNAME=${MONGO_USERNAME}
+      - MONGO_PASSWORD=${MONGO_PASSWORD}
+      - MONGO_HOSTNAME=mongodb
+      - MONGO_PORT=${MONGO_PORT}
+      - MONGO_DB=${MONGO_DB}
+    depends_on: 
+      - mongodb
+    networks: 
+      - app-network
+    command: yarn start
+
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    restart: always
+    env_file: .env    
+    logging: 
+      driver: "none"
+    ports: 
+      - "27017:27017"
+    environment:      
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    networks: 
+      - app-network
+    volumes:
+      - dbdata:/data/db
+    
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes: 
+  dbdata:
